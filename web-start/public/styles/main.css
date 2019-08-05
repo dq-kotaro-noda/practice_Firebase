@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
- html, body {
+html, body {
   font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+router {
+    width: 100%;
+    height: 100%;
 }
 main, #messages-card {
   height: 100%;
+  width: 100%;
   padding-bottom: 0;
 }
 #messages-card-container {
