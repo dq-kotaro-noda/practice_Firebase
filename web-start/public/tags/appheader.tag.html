@@ -1,0 +1,73 @@
+<appheader>
+    <header class="mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+      <div class="mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-grid">
+        <div class="mdl-layout__header-row mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
+          <h3><i class="material-icons">chat_bubble_outline</i>FriendlyChat</h3>
+        </div>
+        <div id="user-container">
+          <div hidden id="user-pic"></div>
+          <div hidden id="user-name"></div>
+          <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+            Sign-out
+          </button>
+          <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+            <i class="material-icons">account_circle</i>Sign-in with Google
+          </button>
+        </div>
+      </div>
+    </header>
+    <style>
+        /* 画面専用のCSS */
+    </style>
+    <script>
+        //サインイン・サインアウト処理
+        this.on('mount', function(){
+            var signInButtonElement = document.getElementById('sign-in');
+            var signOutButtonElement = document.getElementById('sign-out');
+            var userPicElement = document.getElementById('user-pic');
+            var userNameElement = document.getElementById('user-name');
+            signOutButtonElement.addEventListener('click', signOut);
+            signInButtonElement.addEventListener('click', signIn);
+
+            // ユーザーの認証状況を監視して、表示を変更する
+            function authStateObserver(user) {
+              if (user) { // User is signed in!
+                // Get the signed-in user's profile pic and name.
+                var profilePicUrl = getProfilePicUrl();
+                var userName = getUserName();
+
+                // Set the user's profile pic and name.
+                userPicElement.style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
+                userNameElement.textContent = userName;
+
+                // Show user's profile and sign-out button.
+                userNameElement.removeAttribute('hidden');
+                userPicElement.removeAttribute('hidden');
+                signOutButtonElement.removeAttribute('hidden');
+
+                // Hide sign-in button.
+                signInButtonElement.setAttribute('hidden', 'true');
+
+                // We save the Firebase Messaging Device token and enable notifications.
+                saveMessagingDeviceToken();
+              } else { // User is signed out!
+                // Hide user's profile and sign-out button.
+                userNameElement.setAttribute('hidden', 'true');
+                userPicElement.setAttribute('hidden', 'true');
+                signOutButtonElement.setAttribute('hidden', 'true');
+
+                // Show sign-in button.
+                signInButtonElement.removeAttribute('hidden');
+              }
+            }
+
+            // 認証機能の初期化
+            function initFirebaseAuth() {
+                // ユーザーの認証状況を監視する
+                firebase.auth().onAuthStateChanged(authStateObserver);
+            }
+
+            initFirebaseAuth();
+        })
+    </script>
+</appheader>
