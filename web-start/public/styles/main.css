@@ -24,9 +24,10 @@ main, #messages-card {
 #messages-card-container {
   height: calc(100% - 35px);
   padding-bottom: 0;
+  margin: 0 auto;
 }
 #messages-card {
-  margin-top: 15px;
+  margin: 15px auto 0 auto;
 }
 .mdl-layout__header-row span {
   margin-left: 15px;
